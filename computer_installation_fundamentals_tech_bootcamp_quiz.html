@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Installation & Fundamentals: Tech Bootcamp Quiz</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Canvas Confetti for milestone celebrations -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        cyber: {
+                            950: '#060b14',
+                            900: '#0b1324',
+                            800: '#111d35',
+                            700: '#1b2c4e',
+                            cyan: '#06b6d4',
+                            emerald: '#10b981',
+                            amber: '#f59e0b',
+                            rose: '#f43f5e'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom subtle grid background & smooth animations */
+        .tech-grid-dark {
+            background-image: radial-gradient(rgba(6, 182, 212, 0.14) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .tech-grid-light {
+            background-image: radial-gradient(rgba(15, 23, 42, 0.08) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 12px rgba(6, 182, 212, 0.25); }
+            50% { box-shadow: 0 0 22px rgba(6, 182, 212, 0.5); }
+        }
+        .glow-cyan {
+            animation: pulseGlow 3s infinite;
+        }
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slide-up {
+            animation: slideUpFade 0.28s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="dark bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 selection:bg-cyan-500 selection:text-slate-950">
+
+    <!-- Background Grid Overlay -->
+    <div id="bgGrid" class="fixed inset-0 pointer-events-none tech-grid-dark z-0"></div>
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-30 backdrop-blur-md bg-slate-900/85 dark:bg-slate-900/85 border-b border-slate-800 transition-colors">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+            <!-- Brand / Title -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-emerald-500 flex items-center justify-center text-slate-950 font-extrabold shadow-lg shadow-cyan-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-sm sm:text-base font-extrabold tracking-tight text-white leading-tight">
+                        TECH BOOTCAMP <span class="text-cyan-400">QUIZ</span>
+                    </h1>
+                    <p class="text-xs text-slate-400 hidden sm:block">Computer Installation & Fundamentals</p>
+                </div>
+            </div>
+
+            <!-- Action Controls -->
+            <div class="flex items-center gap-2">
+                <!-- Cheat Sheet Drawer Trigger -->
+                <button onclick="toggleCheatSheet()" class="px-3 py-2 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/40 text-cyan-300 text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition active:scale-95">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                    <span>Cheat Sheet</span>
+                </button>
+
+                <!-- Sound Toggle -->
+                <button id="soundToggleBtn" onclick="toggleSound()" title="Toggle Sound Effects" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-emerald-400 transition active:scale-95">
+                    <svg id="soundOnIcon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                    </svg>
+                    <svg id="soundOffIcon" class="w-4 h-4 hidden text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+                    </svg>
+                </button>
+
+                <!-- Theme Toggle -->
+                <button id="themeToggleBtn" onclick="toggleTheme()" title="Switch Light/Dark Theme" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-amber-300 transition active:scale-95">
+                    <svg id="sunIcon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <svg id="moonIcon" class="w-4 h-4 hidden text-slate-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="relative z-10 flex-1 max-w-4xl w-full mx-auto px-4 py-6 sm:py-10 flex flex-col justify-center">
+
+        <!-- ==================== SCREEN 1: WELCOME / LOBBY ==================== -->
+        <section id="welcomeScreen" class="animate-slide-up">
+            <div class="rounded-3xl bg-slate-900/90 border border-slate-800 shadow-2xl p-6 sm:p-10 backdrop-blur-sm">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-semibold mb-4">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    SYSTEM READY // 18 HIGH-YIELD QUESTIONS
+                </div>
+
+                <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white mb-3">
+                    Computer Installation & Fundamentals: <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Tech Bootcamp Quiz</span>
+                </h2>
+                <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
+                    Master the core hardware, firmware, semiconductor, and number-base concepts you need to pass your installation exam. Watch out for <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono text-xs font-bold">[TRAP]</span> questions and defeat the <span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 font-mono text-xs font-bold">[BOSS QUESTION]</span>!
+                </p>
+
+                <!-- 3 Quiz Sections Overview -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-7">
+                    <div class="p-4 rounded-2xl bg-slate-800/70 border border-slate-700/80">
+                        <div class="text-xs font-mono text-cyan-400 font-bold mb-1">PART A • Q1–Q12</div>
+                        <div class="font-bold text-white text-sm">Hardware & Core Theory</div>
+                        <div class="text-xs text-slate-400 mt-1">IPOS, BIOS/CMOS, CPU, RAM, SSD vs HDD, History & ICs</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-800/70 border border-slate-700/80">
+                        <div class="text-xs font-mono text-amber-400 font-bold mb-1">PART B • Q13–Q15</div>
+                        <div class="font-bold text-white text-sm">Spot the Trap (T/F)</div>
+                        <div class="text-xs text-slate-400 mt-1">Firmware vs Software, Integrated Circuits & Classification</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-800/70 border border-slate-700/80">
+                        <div class="text-xs font-mono text-emerald-400 font-bold mb-1">PART C • Q16–Q18</div>
+                        <div class="font-bold text-white text-sm">Number Base Arena</div>
+                        <div class="text-xs text-slate-400 mt-1">Binary/Decimal conversions, Addition & Boss Subtraction</div>
+                    </div>
+                </div>
+
+                <!-- Student Name Input & Start Buttons -->
+                <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-end">
+                    <div class="flex-1">
+                        <label for="studentNameInput" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+                            Technician / Student Name (Optional)
+                        </label>
+                        <input id="studentNameInput" type="text" maxlength="32" placeholder="Enter your name (e.g., Alex Mensah)..."
+                            class="w-full px-4 py-3.5 rounded-xl bg-slate-950/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 font-medium transition" />
+                    </div>
+                    <button onclick="startQuiz(false)" class="px-7 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-extrabold text-base shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-2 transition transform active:scale-95 glow-cyan">
+                        <span>Start Bootcamp</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="mt-4 flex items-center justify-between text-xs text-slate-400 pt-4 border-t border-slate-800/80">
+                    <span>Need a 60-second refresher before starting?</span>
+                    <button onclick="toggleCheatSheet()" class="text-cyan-400 hover:text-cyan-300 font-semibold underline underline-offset-4">
+                        Open High-Yield Study Cheat Sheet →
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SCREEN 2: ACTIVE QUIZ ==================== -->
+        <section id="quizScreen" class="hidden animate-slide-up">
+            <!-- Top HUD: Progress, Score & Streak -->
+            <div class="rounded-2xl bg-slate-900/90 border border-slate-800 p-4 mb-5 shadow-lg">
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+                    <div class="flex items-center gap-2.5">
+                        <span id="partBadge" class="px-2.5 py-1 rounded-lg bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 font-mono text-xs font-bold">
+                            PART A
+                        </span>
+                        <span class="text-sm font-bold text-slate-200">
+                            Question <span id="qCurrentNum" class="text-cyan-400 font-mono">1</span> of <span id="qTotalNum" class="font-mono">18</span>
+                        </span>
+                    </div>
+
+                    <!-- Live Gamified Stats -->
+                    <div class="flex items-center gap-3">
+                        <!-- Streak Pill -->
+                        <div id="streakPill" class="px-3 py-1 rounded-xl bg-slate-800 border border-slate-700 flex items-center gap-1.5 text-xs font-mono font-bold text-slate-300 transition-all">
+                            <span>🔥</span>
+                            <span>Streak: <span id="streakCount">0</span></span>
+                            <span id="comboBadge" class="hidden ml-1 px-1.5 py-0.5 rounded bg-amber-500 text-slate-950 text-[10px] font-extrabold">2X!</span>
+                        </div>
+                        <!-- Score Pill -->
+                        <div class="px-3 py-1 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-xs font-mono font-bold text-emerald-300">
+                            Score: <span id="liveScore">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                    <div id="progressBar" class="h-full bg-gradient-to-r from-cyan-500 to-emerald-400 rounded-full transition-all duration-300" style="width: 5.5%;"></div>
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="rounded-3xl bg-slate-900/95 border border-slate-800 shadow-2xl p-6 sm:p-8">
+                <!-- Topic & Special Tags -->
+                <div class="flex flex-wrap items-center gap-2 mb-4">
+                    <span id="topicBadge" class="px-3 py-1 rounded-lg bg-slate-800 border border-slate-700 text-cyan-300 font-mono text-xs font-semibold">
+                        Topic: Basic Operations & Functions
+                    </span>
+                    <span id="trapBadge" class="hidden px-2.5 py-1 rounded-lg bg-amber-500/20 border border-amber-500/40 text-amber-300 font-mono text-xs font-extrabold">
+                        ⚠️ TRAP QUESTION
+                    </span>
+                    <span id="bossBadge" class="hidden px-2.5 py-1 rounded-lg bg-rose-500/20 border border-rose-500/40 text-rose-300 font-mono text-xs font-extrabold">
+                        👑 BOSS QUESTION
+                    </span>
+                </div>
+
+                <!-- Question Prompt -->
+                <h3 id="questionText" class="text-lg sm:text-xl font-bold text-white leading-snug mb-6">
+                    Question text goes here...
+                </h3>
+
+                <!-- Optional Binary Scratchpad Toggle (Shown in Part C) -->
+                <div id="scratchpadContainer" class="hidden mb-6">
+                    <button type="button" onclick="toggleScratchpad()" class="text-xs font-mono font-semibold text-cyan-400 hover:text-cyan-300 flex items-center gap-1.5 mb-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                        <span id="scratchpadToggleLabel">Show Interactive Bit Helper & Scratchpad</span>
+                    </button>
+
+                    <div id="scratchpadBox" class="hidden p-4 rounded-2xl bg-slate-950/90 border border-cyan-500/30 space-y-3">
+                        <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400 font-mono">
+                            <span>CLICK BITS TO TOGGLE (PLACE VALUES):</span>
+                            <span>Decimal Value = <strong id="bitHelperSum" class="text-emerald-400 text-sm">0</strong></span>
+                        </div>
+                        <!-- 6-bit interactive place value toggler -->
+                        <div class="grid grid-cols-6 gap-2 text-center font-mono">
+                            <button type="button" onclick="toggleBit(5)" class="bit-btn p-2 rounded-xl bg-slate-800 border border-slate-700 hover:border-cyan-400 transition" data-bit="5">
+                                <div class="text-[10px] text-slate-400">2⁵ (32)</div>
+                                <div class="bit-val text-base font-extrabold text-white mt-0.5">0</div>
+                            </button>
+                            <button type="button" onclick="toggleBit(4)" class="bit-btn p-2 rounded-xl bg-slate-800 border border-slate-700 hover:border-cyan-400 transition" data-bit="4">
+                                <div class="text-[10px] text-slate-400">2⁴ (16)</div>
+                                <div class="bit-val text-base font-extrabold text-white mt-0.5">0</div>
+                            </button>
+                            <button type="button" onclick="toggleBit(3)" class="bit-btn p-2 rounded-xl bg-slate-800 border border-slate-700 hover:border-cyan-400 transition" data-bit="3">
+                                <div class="text-[10px] text-slate-400">2³ (8)</div>
+                                <div class="bit-val text-base font-extrabold text-white mt-0.5">0</div>
+                            </button>
+                            <button type="button" onclick="toggleBit(2)" class="bit-btn p-2 rounded-xl bg-slate-800 border border-slate-700 hover:border-cyan-400 transition" data-bit="2">
+                                <div class="text-[10px] text-slate-400">2² (4)</div>
+                                <div class="bit-val text-base font-extrabold text-white mt-0.5">0</div>
+                            </button>
+                            <button type="button" onclick="toggleBit(1)" class="bit-btn p-2 rounded-xl bg-slate-800 border border-slate-700 hover:border-cyan-400 transition" data-bit="1">
+                                <div class="text-[10px] text-slate-400">2¹ (2)</div>
+                                <div class="bit-val text-base font-extrabold text-white mt-0.5">0</div>
+                            </button>
+                            <button type="button" onclick="toggleBit(0)" class="bit-btn p-2 rounded-xl bg-slate-800 border border-slate-700 hover:border-cyan-400 transition" data-bit="0">
+                                <div class="text-[10px] text-slate-400">2⁰ (1)</div>
+                                <div class="bit-val text-base font-extrabold text-white mt-0.5">0</div>
+                            </button>
+                        </div>
+                        <textarea rows="2" placeholder="Rough work scratchpad (e.g., carries & borrows)..." class="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono text-cyan-200 placeholder-slate-600 focus:outline-none focus:border-cyan-500"></textarea>
+                    </div>
+                </div>
+
+                <!-- Dynamic Answer Area (MCQ, True/False, or Number Base Inputs) -->
+                <div id="answerArea" class="space-y-3"></div>
+
+                <!-- Instant Feedback Banner (Hidden until answered) -->
+                <div id="feedbackBanner" class="hidden mt-6 p-5 rounded-2xl border animate-slide-up">
+                    <div class="flex items-start gap-3">
+                        <div id="feedbackIcon" class="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 font-bold text-lg"></div>
+                        <div class="flex-1">
+                            <h4 id="feedbackTitle" class="font-extrabold text-base mb-1"></h4>
+                            <p id="feedbackExplanation" class="text-sm leading-relaxed"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Navigation Action -->
+                <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between gap-3">
+                    <span class="text-xs text-slate-500 font-mono hidden sm:inline">Keyboard shortcuts: 1-4 / A-D or Enter</span>
+                    <button id="nextQuestionBtn" onclick="nextQuestion()" class="hidden ml-auto px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-extrabold text-sm sm:text-base shadow-lg shadow-cyan-500/20 flex items-center gap-2 transition active:scale-95">
+                        <span id="nextBtnLabel">Next Question</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SCREEN 3: RESULTS & STUDY TRIAGE ==================== -->
+        <section id="resultsScreen" class="hidden animate-slide-up">
+            <div class="rounded-3xl bg-slate-900/95 border border-slate-800 shadow-2xl p-6 sm:p-10">
+                <!-- Rank Header -->
+                <div class="text-center max-w-xl mx-auto mb-8">
+                    <div id="rankBadgeIcon" class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-cyan-500 to-emerald-500 flex items-center justify-center text-3xl shadow-lg shadow-cyan-500/25">
+                        🏆
+                    </div>
+                    <div class="text-xs font-mono uppercase tracking-widest text-cyan-400 font-bold mb-1">
+                        DIAGNOSTIC REPORT // <span id="reportStudentName">TECHNICIAN</span>
+                    </div>
+                    <h2 id="rankTitle" class="text-2xl sm:text-4xl font-extrabold text-white mb-2">
+                        Master Technician
+                    </h2>
+                    <p id="rankSubtitle" class="text-sm sm:text-base text-slate-300">
+                        Outstanding performance! You are ready to ace the Computer Installation quiz.
+                    </p>
+                </div>
+
+                <!-- 3 Key Metrics Cards -->
+                <div class="grid grid-cols-3 gap-3 sm:gap-4 mb-8">
+                    <div class="p-4 rounded-2xl bg-slate-800/80 border border-slate-700 text-center">
+                        <div class="text-xs font-mono text-slate-400 mb-1">FINAL SCORE</div>
+                        <div id="finalScoreText" class="text-xl sm:text-3xl font-extrabold text-emerald-400 font-mono">18/18</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-800/80 border border-slate-700 text-center">
+                        <div class="text-xs font-mono text-slate-400 mb-1">ACCURACY</div>
+                        <div id="finalAccuracyText" class="text-xl sm:text-3xl font-extrabold text-cyan-400 font-mono">100%</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-800/80 border border-slate-700 text-center">
+                        <div class="text-xs font-mono text-slate-400 mb-1">BEST STREAK</div>
+                        <div id="finalStreakText" class="text-xl sm:text-3xl font-extrabold text-amber-400 font-mono">🔥 18</div>
+                    </div>
+                </div>
+
+                <!-- Study Triage: Topic-by-Topic Breakdown -->
+                <div class="mb-8">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-base sm:text-lg font-extrabold text-white flex items-center gap-2">
+                            <span>📊 Study Triage & Topic Mastery</span>
+                        </h3>
+                        <span class="text-xs text-slate-400">Narrow your final revision</span>
+                    </div>
+                    <div id="topicBreakdownGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-4 border-t border-slate-800">
+                    <button id="retryMissedBtn" onclick="startQuiz(true)" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-sm sm:text-base shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 transition active:scale-95">
+                        <span>🎯 Retry Missed Questions Only (<span id="missedCountLabel">0</span>)</span>
+                    </button>
+                    <button onclick="startQuiz(false)" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition active:scale-95">
+                        <span>🔄 Restart Full 18-Question Quiz</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ==================== CHEAT SHEET MODAL / DRAWER ==================== -->
+    <div id="cheatSheetModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-3xl max-w-3xl w-full max-h-[88vh] flex flex-col shadow-2xl animate-slide-up">
+            <!-- Modal Header -->
+            <div class="p-5 border-b border-slate-800 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <span class="px-2.5 py-1 rounded-lg bg-cyan-500/20 text-cyan-300 font-mono text-xs font-bold">QUICK STUDY</span>
+                    <h3 class="text-lg font-extrabold text-white">High-Yield Exam Cheat Sheet</h3>
+                </div>
+                <button onclick="toggleCheatSheet()" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-5 sm:p-6 overflow-y-auto space-y-5 text-sm text-slate-300">
+                <!-- Critical Exam Notes Banner -->
+                <div class="p-4 rounded-2xl bg-cyan-500/10 border border-cyan-500/30">
+                    <div class="text-xs font-mono font-bold text-cyan-300 uppercase mb-2">⚡ Must-Remember Key Notes</div>
+                    <ul class="space-y-1.5 text-slate-200">
+                        <li>• <strong>BIOS & CMOS:</strong> The firmware is modified in the <strong>BIOS setup</strong>, and its settings are stored in the <strong>CMOS</strong>.</li>
+                        <li>• <strong>CPU:</strong> Central Processing Unit (ALU = math/logic, CU = control/flow, Registers = fast memory).</li>
+                        <li>• <strong>RAM:</strong> Random Access Memory (<strong>volatile</strong> temporary workspace; clears when power turns off).</li>
+                        <li>• <strong>Storage Speed:</strong> <strong>Solid-State Drives (SSDs)</strong> use flash memory with no moving parts and are faster than magnetic drives (HDDs).</li>
+                    </ul>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="p-4 rounded-2xl bg-slate-800/70 border border-slate-700/80">
+                        <h4 class="font-bold text-white mb-1.5">1. IPOS Cycle & Limitations</h4>
+                        <p class="text-xs leading-relaxed text-slate-300">
+                            <strong>I</strong>nput → <strong>P</strong>rocessing → <strong>O</strong>utput → <strong>S</strong>torage.<br>
+                            Computers have <strong>Zero IQ</strong> and follow <strong>GIGO</strong> (Garbage In, Garbage Out).<br>
+                            <em>Classification:</em> Supercomputer → Mainframe → Minicomputer → Microcomputer. <strong>Hybrid</strong> computers process both Analog & Digital data.
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-slate-800/70 border border-slate-700/80">
+                        <h4 class="font-bold text-white mb-1.5">2. Computer Generations</h4>
+                        <p class="text-xs leading-relaxed text-slate-300">
+                            <strong>1st:</strong> Vacuum Tubes • <strong>2nd:</strong> Transistors<br>
+                            <strong>3rd:</strong> Integrated Circuits (ICs) • <strong>4th:</strong> Microprocessors (VLSI)<br>
+                            <strong>5th:</strong> ULSI & Artificial Intelligence
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-slate-800/70 border border-slate-700/80">
+                        <h4 class="font-bold text-white mb-1.5">3. Semiconductors & Integration</h4>
+                        <p class="text-xs leading-relaxed text-slate-300">
+                            <strong>Silicon/Germanium</strong> conductivity sits between conductors and insulators, controlled via <strong>doping</strong> (N-type/P-type).<br>
+                            <strong>Transistors</strong> act as electronic switches (<code>1</code> = ON, <code>0</code> = OFF). Modern CPUs use <strong>VLSI / ULSI</strong> (millions–billions of transistors).
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-slate-800/70 border border-slate-700/80">
+                        <h4 class="font-bold text-white mb-1.5">4. Binary Math Rules</h4>
+                        <p class="text-xs font-mono leading-relaxed text-slate-300">
+                            Add: 1 + 1 = 10₂ (write 0, carry 1)<br>
+                            Add: 1 + 1 + 1 = 11₂ (write 1, carry 1)<br>
+                            Sub: 0 - 1 = 1 (borrow 1 from next bit = +2 in base 2)
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-4 border-t border-slate-800 flex justify-end">
+                <button onclick="toggleCheatSheet()" class="px-5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-sm transition">
+                    Got It, Back to Quiz
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // ==================== COMPLETE 18-QUESTION DATASET ====================
+        const ALL_QUESTIONS = [
+            // --- PART A: MULTIPLE CHOICE (Q1 - Q12) ---
+            {
+                id: 1,
+                part: 'PART A',
+                type: 'mcq',
+                topic: 'Basic Operations & Functions',
+                isTrap: false,
+                isBoss: false,
+                question: 'During computer installation and normal startup, a user types a password on the keyboard, the system verifies it, displays the desktop, and saves a session log. Which sequence correctly matches the IPOS cycle?',
+                options: [
+                    'A) Processing → Input → Storage → Output',
+                    'B) Input → Processing → Output → Storage',
+                    'C) Input → Storage → Processing → Output',
+                    'D) Storage → Input → Processing → Output'
+                ],
+                correctIndex: 1,
+                explanation: 'Typing is Input, verifying the password is Processing, displaying the desktop is Output, and saving the session log is Storage (IPOS).'
+            },
+            {
+                id: 2,
+                part: 'PART A',
+                type: 'mcq',
+                topic: 'BIOS & CMOS',
+                isTrap: true,
+                isBoss: false,
+                question: 'A technician enters the setup utility during boot-up to change the boot priority from the hard drive to a USB flash drive. Where is the BIOS firmware modified, and where are those updated settings stored?',
+                options: [
+                    'A) Modified in RAM; stored in the CPU registers',
+                    'B) Modified in CMOS; stored on the magnetic hard drive',
+                    'C) Modified in the BIOS setup; stored in the CMOS',
+                    'D) Modified in the Operating System; stored in the ALU'
+                ],
+                correctIndex: 2,
+                explanation: 'Classic exam rule: BIOS firmware settings are modified in the BIOS setup utility, and those user configurations are stored in the CMOS memory chip (powered by the CMOS battery).'
+            },
+            {
+                id: 3,
+                part: 'PART A',
+                type: 'mcq',
+                topic: 'Storage Drives',
+                isTrap: false,
+                isBoss: false,
+                question: 'When upgrading an older workstation during a computer installation lab, why will replacing a magnetic Hard Disk Drive (HDD) with a Solid-State Drive (SSD) dramatically improve boot times?',
+                options: [
+                    'A) SSDs use faster-spinning magnetic platters than HDDs',
+                    'B) SSDs use flash memory with no moving parts, making them faster than magnetic drives',
+                    'C) SSDs connect directly inside the CPU registers',
+                    'D) SSDs convert analog signals directly into hexadecimal'
+                ],
+                correctIndex: 1,
+                explanation: 'Solid-state drives (SSDs) use electronic flash memory with no moving mechanical parts, making them significantly faster than magnetic drives (HDDs).'
+            },
+            {
+                id: 4,
+                part: 'PART A',
+                type: 'mcq',
+                topic: 'History of Computers',
+                isTrap: false,
+                isBoss: false,
+                question: 'Which pairing of computer generation and core hardware technology is INCORRECT?',
+                options: [
+                    'A) First Generation — Vacuum Tubes',
+                    'B) Second Generation — Transistors',
+                    'C) Third Generation — Integrated Circuits (ICs)',
+                    'D) Fourth Generation — Vacuum-Sealed Magnetic Relays'
+                ],
+                correctIndex: 3,
+                explanation: 'Fourth-generation computers (1970s–present) are powered by Microprocessors (VLSI), not vacuum-sealed magnetic relays.'
+            },
+            {
+                id: 5,
+                part: 'PART A',
+                type: 'mcq',
+                topic: 'Semiconductors & Conductivity',
+                isTrap: false,
+                isBoss: false,
+                question: 'Why are materials like Silicon and Germanium ideal for building computer chips?',
+                options: [
+                    'A) They are perfect insulators that completely block electric current',
+                    'B) Their electrical conductivity lies between conductors and insulators and can be precisely controlled via doping',
+                    'C) They conduct electricity better than copper at absolute zero',
+                    'D) They never generate heat when current passes through them'
+                ],
+                correctIndex: 1,
+                explanation: 'Semiconductors have electrical conductivity between conductors and insulators, and adding impurities (doping) creates N-type and P-type regions to control current flow.'
+            },
+            {
+                id: 6,
+                part: 'PART A',
+                type: 'mcq',
+                topic: 'Transistors',
+                isTrap: false,
+                isBoss: false,
+                question: 'At the most fundamental digital level, how does a transistor represent binary data inside a processor?',
+                options: [
+                    'A) By spinning a tiny magnetic disk clockwise (1) or counter-clockwise (0)',
+                    'B) By acting as an electronic switch that turns current ON (1) or OFF (0)',
+                    'C) By changing the physical color of silicon under heat',
+                    'D) By storing data permanently even after power is removed'
+                ],
+                correctIndex: 1,
+                explanation: 'Transistors act as microscopic electronic switches (ON = 1, OFF = 0) and amplifiers, combining to build logic gates inside processors.'
+            },
+            {
+                id: 7,
+                part: 'PART A',
+                type: 'mcq',
+                topic: 'Levels of Integration',
+                isTrap: false,
+                isBoss: false,
+                question: 'Modern multi-core microprocessors pack hundreds of millions to billions of transistors onto a single silicon chip. Which levels of integration best describe modern CPUs?',
+                options: [
+                    'A) SSI and MSI',
+                    'B) MSI and LSI',
+                    'C) VLSI and ULSI',
+                    'D) SSI and LSI'
+                ],
+                correctIndex: 2,
+                explanation: 'Very Large-Scale Integration (VLSI) and Ultra Large-Scale Integration (ULSI) pack millions to billions of transistors onto a single chip.'
+            },
+            {
+                id: 8,
+                part: 'PART A',
+                type: 'mcq',
+                topic: 'Characteristics & Limitations',
+                isTrap: false,
+                isBoss: false,
+                question: 'An installation technician accidentally enters the wrong IP configuration into a network setup script, and the computer faithfully applies the broken settings without questioning them. Which limitation and principle does this demonstrate?',
+                options: [
+                    'A) High diligence and artificial intuition',
+                    'B) Zero IQ and GIGO (Garbage In, Garbage Out)',
+                    'C) Low speed and analog drift',
+                    'D) Volatile memory failure'
+                ],
+                correctIndex: 1,
+                explanation: 'Computers have Zero IQ (no independent judgment) and follow GIGO (Garbage In, Garbage Out)—incorrect input produces incorrect output.'
+            },
+            {
+                id: 9,
+                part: 'PART A',
+                type: 'mcq',
+                topic: 'CPU',
+                isTrap: false,
+                isBoss: false,
+                question: 'Inside the Central Processing Unit (CPU), which component is responsible for performing mathematical comparisons (such as checking if A > B) and arithmetic operations?',
+                options: [
+                    'A) Control Unit (CU)',
+                    'B) CMOS Battery',
+                    'C) Arithmetic Logic Unit (ALU)',
+                    'D) PCIe Expansion Slot'
+                ],
+                correctIndex: 2,
+                explanation: 'The Arithmetic Logic Unit (ALU) executes all arithmetic calculations and logical comparisons inside the CPU, while the Control Unit (CU) directs instruction flow.'
+            },
+            {
+                id: 10,
+                part: 'PART A',
+                type: 'mcq',
+                topic: 'RAM',
+                isTrap: true,
+                isBoss: false,
+                question: 'A student is typing a report without saving it when the power suddenly goes out. When the PC reboots, the unsaved work is gone. Why did this happen?',
+                options: [
+                    'A) The motherboard BIOS erased the file during POST',
+                    'B) The work was held in RAM (Random Access Memory), which is volatile and loses data without power',
+                    'C) The SSD automatically wipes unsaved documents on shutdown',
+                    'D) The Control Unit moved the file into the ALU'
+                ],
+                correctIndex: 1,
+                explanation: 'RAM (Random Access Memory) is volatile primary working memory—anything not saved to non-volatile storage (SSD/HDD) is erased when power is lost.'
+            },
+            {
+                id: 11,
+                part: 'PART A',
+                type: 'mcq',
+                topic: 'Motherboard',
+                isTrap: false,
+                isBoss: false,
+                question: 'Which component acts as the main printed circuit board (PCB) that houses the CPU socket, RAM slots, chipset, and expansion slots, allowing all hardware parts to communicate?',
+                options: [
+                    'A) Power Supply Unit (PSU)',
+                    'B) Motherboard',
+                    'C) Solid-State Drive (SSD)',
+                    'D) Optical Drive'
+                ],
+                correctIndex: 1,
+                explanation: 'The motherboard is the main printed circuit board (PCB) connecting the CPU, RAM, BIOS/CMOS, storage interfaces, and expansion slots.'
+            },
+            {
+                id: 12,
+                part: 'PART A',
+                type: 'mcq',
+                topic: 'Classification & Relevance',
+                isTrap: false,
+                isBoss: false,
+                question: 'A hospital ICU monitor continuously measures a patient’s analog heartbeat/blood pressure waveforms and converts them into digital numbers on a screen for doctors. How is this computer classified by data handled?',
+                options: [
+                    'A) Purely Analog Computer',
+                    'B) Purely Mainframe Computer',
+                    'C) Hybrid Computer',
+                    'D) First-Generation Microcomputer'
+                ],
+                correctIndex: 2,
+                explanation: 'A Hybrid computer combines analog measurement capabilities (continuous vital sign signals) with digital processing and numerical display.'
+            },
+
+            // --- PART B: SPOT THE TRAP — TRUE OR FALSE (Q13 - Q15) ---
+            {
+                id: 13,
+                part: 'PART B',
+                type: 'tf',
+                topic: 'Firmware & Software',
+                isTrap: true,
+                isBoss: false,
+                question: 'Spot the Trap (True or False): "Firmware and application software are identical because both are installed on a magnetic hard drive by the user after booting Windows."',
+                correctBool: false,
+                explanation: 'FALSE! Firmware (such as BIOS) is low-level control code embedded directly into non-volatile ROM/flash chips on the hardware itself, whereas application software runs on top of the OS from storage drives.'
+            },
+            {
+                id: 14,
+                part: 'PART B',
+                type: 'tf',
+                topic: 'Integrated Components',
+                isTrap: false,
+                isBoss: false,
+                question: 'Spot the Trap (True or False): "An Integrated Circuit (IC) combines miniature electronic components—such as transistors, resistors, and capacitors—onto a single semiconductor chip."',
+                correctBool: true,
+                explanation: 'TRUE! Fabricating transistors, resistors, and capacitors onto a single silicon chip made computers dramatically smaller, faster, and more reliable.'
+            },
+            {
+                id: 15,
+                part: 'PART B',
+                type: 'tf',
+                topic: 'Classification & Relevance',
+                isTrap: false,
+                isBoss: false,
+                question: 'Spot the Trap (True or False): "Ranked from most powerful to least powerful by size and processing capacity, the correct order is: Supercomputer → Mainframe → Minicomputer → Microcomputer."',
+                correctBool: true,
+                explanation: 'TRUE! Supercomputers sit at the top for massive scientific calculations, followed by Mainframes, Minicomputers/mid-range servers, and Microcomputers (PCs, laptops, smartphones).'
+            },
+
+            // --- PART C: NUMBER BASE ARENA (Q16 - Q18) ---
+            {
+                id: 16,
+                part: 'PART C',
+                type: 'number_dual',
+                topic: 'Number Bases',
+                isTrap: false,
+                isBoss: false,
+                question: 'Number Base Conversion: Convert the binary number 11010₂ into Decimal (Base 10), and convert the decimal number 45₁₀ into Binary (Base 2).',
+                label1: '11010₂ in Decimal (Base 10):',
+                placeholder1: 'e.g. 26',
+                answer1: '26',
+                label2: '45₁₀ in Binary (Base 2):',
+                placeholder2: 'e.g. 101101',
+                answer2: '101101',
+                explanation: '11010₂ = (1×16) + (1×8) + (0×4) + (1×2) + (0×1) = 26₁₀. Dividing 45 by 2 repeatedly gives remainders bottom-to-top: 101101₂ (32 + 8 + 4 + 1 = 45).'
+            },
+            {
+                id: 17,
+                part: 'PART C',
+                type: 'number_single',
+                topic: 'Number Bases',
+                isTrap: false,
+                isBoss: false,
+                question: 'Binary Addition: Calculate 10110₂ + 1101₂ (enter your binary result).',
+                label1: 'Binary Sum (Base 2):',
+                placeholder1: 'Enter 0s and 1s...',
+                answer1: '100011',
+                explanation: '10110₂ (22) + 1101₂ (13) = 100011₂ (35). Remember: 1 + 1 = 10₂ (write 0, carry 1) and 1 + 1 + 1 = 11₂ (write 1, carry 1).'
+            },
+            {
+                id: 18,
+                part: 'PART C',
+                type: 'number_single',
+                topic: 'Number Bases',
+                isTrap: false,
+                isBoss: true,
+                question: 'BOSS QUESTION — Binary Subtraction: Calculate 10100₂ − 111₂ (watch your borrows and enter the binary result).',
+                label1: 'Binary Difference (Base 2):',
+                placeholder1: 'Enter 0s and 1s...',
+                answer1: '1101',
+                explanation: '10100₂ (20) − 111₂ (7) = 1101₂ (13). Borrowing 1 from a higher bit in base 2 brings over a value of 2 (10₂), so 2 − 1 = 1.'
+            }
+        ];
+
+        // ==================== APPLICATION STATE ====================
+        let activeQuestions = [];
+        let currentIdx = 0;
+        let score = 0;
+        let streak = 0;
+        let bestStreak = 0;
+        let questionAnswered = false;
+        let missedQuestionIds = new Set();
+        let topicStats = {}; // { topicName: { correct: 0, total: 0 } }
+        let soundEnabled = true;
+        let bitArray = [0, 0, 0, 0, 0, 0];
+
+        // ==================== WEB AUDIO API SOUND SYNTHESIZER ====================
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) {
+                    audioCtx = new AudioContextClass();
+                }
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playTone(freq, type, duration, delay = 0, gainVal = 0.14) {
+            if (!soundEnabled) return;
+            try {
+                initAudio();
+                if (!audioCtx) return;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime + delay);
+
+                gain.gain.setValueAtTime(gainVal, audioCtx.currentTime + delay);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + delay + duration);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.start(audioCtx.currentTime + delay);
+                osc.stop(audioCtx.currentTime + delay + duration);
+            } catch (e) {
+                // Fail silently if browser blocks audio
+            }
+        }
+
+        function playCorrectSound(currentStreak) {
+            if (currentStreak >= 3) {
+                // Ascending arpeggio for streak!
+                playTone(523.25, 'triangle', 0.14, 0);      // C5
+                playTone(659.25, 'triangle', 0.14, 0.08);   // E5
+                playTone(783.99, 'triangle', 0.22, 0.16);   // G5
+            } else {
+                playTone(587.33, 'sine', 0.12, 0);          // D5
+                playTone(880.00, 'sine', 0.20, 0.09);       // A5
+            }
+        }
+
+        function playWrongSound() {
+            playTone(220, 'sawtooth', 0.18, 0, 0.11);
+            playTone(175, 'sawtooth', 0.26, 0.14, 0.11);
+        }
+
+        function playVictorySound() {
+            playTone(523.25, 'triangle', 0.15, 0);
+            playTone(659.25, 'triangle', 0.15, 0.1);
+            playTone(783.99, 'triangle', 0.15, 0.2);
+            playTone(1046.50, 'triangle', 0.35, 0.3);
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            document.getElementById('soundOnIcon').classList.toggle('hidden', !soundEnabled);
+            document.getElementById('soundOffIcon').classList.toggle('hidden', soundEnabled);
+            if (soundEnabled) playTone(660, 'sine', 0.1, 0);
+        }
+
+        // ==================== THEME & MODAL CONTROLS ====================
+        function toggleTheme() {
+            const body = document.body;
+            const bgGrid = document.getElementById('bgGrid');
+            const isDark = body.classList.contains('dark');
+
+            if (isDark) {
+                body.classList.remove('dark', 'bg-slate-950', 'text-slate-100');
+                body.classList.add('bg-slate-100', 'text-slate-900');
+                bgGrid.classList.remove('tech-grid-dark');
+                bgGrid.classList.add('tech-grid-light');
+                document.getElementById('sunIcon').classList.add('hidden');
+                document.getElementById('moonIcon').classList.remove('hidden');
+            } else {
+                body.classList.add('dark', 'bg-slate-950', 'text-slate-100');
+                body.classList.remove('bg-slate-100', 'text-slate-900');
+                bgGrid.classList.add('tech-grid-dark');
+                bgGrid.classList.remove('tech-grid-light');
+                document.getElementById('sunIcon').classList.remove('hidden');
+                document.getElementById('moonIcon').classList.add('hidden');
+            }
+        }
+
+        function toggleCheatSheet() {
+            const modal = document.getElementById('cheatSheetModal');
+            modal.classList.toggle('hidden');
+        }
+
+        // ==================== INTERACTIVE BIT HELPER ====================
+        function toggleScratchpad() {
+            const box = document.getElementById('scratchpadBox');
+            const label = document.getElementById('scratchpadToggleLabel');
+            const isHidden = box.classList.contains('hidden');
+            box.classList.toggle('hidden');
+            label.textContent = isHidden ? 'Hide Interactive Bit Helper & Scratchpad' : 'Show Interactive Bit Helper & Scratchpad';
+        }
+
+        function resetBitHelper() {
+            bitArray = [0, 0, 0, 0, 0, 0];
+            document.querySelectorAll('.bit-btn').forEach(btn => {
+                btn.classList.remove('bg-cyan-500/25', 'border-cyan-400');
+                btn.classList.add('bg-slate-800', 'border-slate-700');
+                btn.querySelector('.bit-val').textContent = '0';
+                btn.querySelector('.bit-val').classList.remove('text-cyan-300');
+                btn.querySelector('.bit-val').classList.add('text-white');
+            });
+            document.getElementById('bitHelperSum').textContent = '0';
+        }
+
+        function toggleBit(bitIndex) {
+            bitArray[bitIndex] = bitArray[bitIndex] === 0 ? 1 : 0;
+            const btn = document.querySelector(`.bit-btn[data-bit="${bitIndex}"]`);
+            const valEl = btn.querySelector('.bit-val');
+            valEl.textContent = bitArray[bitIndex];
+
+            if (bitArray[bitIndex] === 1) {
+                btn.classList.remove('bg-slate-800', 'border-slate-700');
+                btn.classList.add('bg-cyan-500/25', 'border-cyan-400');
+                valEl.classList.remove('text-white');
+                valEl.classList.add('text-cyan-300');
+            } else {
+                btn.classList.add('bg-slate-800', 'border-slate-700');
+                btn.classList.remove('bg-cyan-500/25', 'border-cyan-400');
+                valEl.classList.add('text-white');
+                valEl.classList.remove('text-cyan-300');
+            }
+
+            let sum = 0;
+            for (let i = 0; i < 6; i++) {
+                if (bitArray[i] === 1) sum += Math.pow(2, i);
+            }
+            document.getElementById('bitHelperSum').textContent = sum;
+            playTone(440 + bitIndex * 60, 'sine', 0.06, 0, 0.08);
+        }
+
+        // ==================== QUIZ FLOW LOGIC ====================
+        function startQuiz(retryMissedOnly = false) {
+            initAudio();
+            if (retryMissedOnly && missedQuestionIds.size > 0) {
+                activeQuestions = ALL_QUESTIONS.filter(q => missedQuestionIds.has(q.id));
+            } else {
+                activeQuestions = [...ALL_QUESTIONS];
+            }
+
+            currentIdx = 0;
+            score = 0;
+            streak = 0;
+            bestStreak = 0;
+            missedQuestionIds.clear();
+            topicStats = {};
+
+            activeQuestions.forEach(q => {
+                if (!topicStats[q.topic]) {
+                    topicStats[q.topic] = { correct: 0, total: 0 };
+                }
+                topicStats[q.topic].total++;
+            });
+
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.add('hidden');
+            document.getElementById('quizScreen').classList.remove('hidden');
+
+            updateHUD();
+            renderQuestion();
+        }
+
+        function updateHUD() {
+            const total = activeQuestions.length;
+            document.getElementById('qCurrentNum').textContent = currentIdx + 1;
+            document.getElementById('qTotalNum').textContent = total;
+            document.getElementById('liveScore').textContent = score;
+            document.getElementById('streakCount').textContent = streak;
+
+            const pct = ((currentIdx) / total) * 100;
+            document.getElementById('progressBar').style.width = `${Math.max(5, pct)}%`;
+
+            const streakPill = document.getElementById('streakPill');
+            const comboBadge = document.getElementById('comboBadge');
+            if (streak >= 3) {
+                streakPill.classList.remove('bg-slate-800', 'border-slate-700', 'text-slate-300');
+                streakPill.classList.add('bg-amber-500/20', 'border-amber-500/50', 'text-amber-300');
+                comboBadge.classList.remove('hidden');
+            } else {
+                streakPill.classList.add('bg-slate-800', 'border-slate-700', 'text-slate-300');
+                streakPill.classList.remove('bg-amber-500/20', 'border-amber-500/50', 'text-amber-300');
+                comboBadge.classList.add('hidden');
+            }
+        }
+
+        function renderQuestion() {
+            questionAnswered = false;
+            const q = activeQuestions[currentIdx];
+
+            // Update badges
+            document.getElementById('partBadge').textContent = q.part;
+            document.getElementById('topicBadge').textContent = `Topic: ${q.topic}`;
+            document.getElementById('trapBadge').classList.toggle('hidden', !q.isTrap);
+            document.getElementById('bossBadge').classList.toggle('hidden', !q.isBoss);
+            document.getElementById('questionText').textContent = `${q.id}. ${q.question}`;
+
+            // Hide feedback & next button
+            const feedbackBanner = document.getElementById('feedbackBanner');
+            feedbackBanner.classList.add('hidden');
+            document.getElementById('nextQuestionBtn').classList.add('hidden');
+
+            // Show scratchpad in Part C
+            const scratchpadContainer = document.getElementById('scratchpadContainer');
+            if (q.part === 'PART C') {
+                scratchpadContainer.classList.remove('hidden');
+                resetBitHelper();
+            } else {
+                scratchpadContainer.classList.add('hidden');
+            }
+
+            const answerArea = document.getElementById('answerArea');
+            answerArea.innerHTML = '';
+
+            if (q.type === 'mcq') {
+                q.options.forEach((optText, idx) => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.dataset.index = idx;
+                    btn.className = 'mcq-option w-full text-left p-4 rounded-2xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 hover:border-cyan-400/70 text-slate-100 font-medium text-sm sm:text-base transition-all flex items-center justify-between gap-3 active:scale-[0.99]';
+                    btn.innerHTML = `
+                        <span>${optText}</span>
+                        <span class="option-status text-xs font-mono font-bold"></span>
+                    `;
+                    btn.onclick = () => handleMCQAnswer(idx);
+                    answerArea.appendChild(btn);
+                });
+            } else if (q.type === 'tf') {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2';
+                wrapper.innerHTML = `
+                    <button type="button" id="tfTrueBtn" onclick="handleTFAnswer(true)" class="p-5 rounded-2xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 hover:border-emerald-400 text-center transition-all active:scale-95">
+                        <div class="text-2xl mb-1">✅</div>
+                        <div class="font-extrabold text-lg text-white">TRUE</div>
+                        <div class="text-xs text-slate-400 mt-0.5">Statement is completely accurate</div>
+                    </button>
+                    <button type="button" id="tfFalseBtn" onclick="handleTFAnswer(false)" class="p-5 rounded-2xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 hover:border-rose-400 text-center transition-all active:scale-95">
+                        <div class="text-2xl mb-1">🚨</div>
+                        <div class="font-extrabold text-lg text-white">FALSE (TRAP!)</div>
+                        <div class="text-xs text-slate-400 mt-0.5">Statement contains a factual error</div>
+                    </button>
+                `;
+                answerArea.appendChild(wrapper);
+            } else if (q.type === 'number_dual' || q.type === 'number_single') {
+                const form = document.createElement('form');
+                form.className = 'space-y-4';
+                form.onsubmit = (e) => {
+                    e.preventDefault();
+                    handleNumberAnswer();
+                };
+
+                let inputsHTML = `
+                    <div>
+                        <label class="block text-xs font-mono font-bold uppercase text-cyan-300 mb-1.5">${q.label1}</label>
+                        <input id="numInput1" type="text" autocomplete="off" placeholder="${q.placeholder1}"
+                            class="w-full px-4 py-3.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono text-base focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20" />
+                    </div>
+                `;
+
+                if (q.type === 'number_dual') {
+                    inputsHTML += `
+                        <div>
+                            <label class="block text-xs font-mono font-bold uppercase text-emerald-300 mb-1.5">${q.label2}</label>
+                            <input id="numInput2" type="text" autocomplete="off" placeholder="${q.placeholder2}"
+                                class="w-full px-4 py-3.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono text-base focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20" />
+                        </div>
+                    `;
+                }
+
+                inputsHTML += `
+                    <button id="submitNumBtn" type="submit" class="px-6 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-extrabold text-sm sm:text-base shadow-lg shadow-cyan-500/20 transition active:scale-95">
+                        Verify Calculation
+                    </button>
+                `;
+
+                form.innerHTML = inputsHTML;
+                answerArea.appendChild(form);
+                setTimeout(() => {
+                    const firstInput = document.getElementById('numInput1');
+                    if (firstInput) firstInput.focus();
+                }, 50);
+            }
+
+            updateHUD();
+        }
+
+        // ==================== ANSWER HANDLERS ====================
+        function handleMCQAnswer(selectedIndex) {
+            if (questionAnswered) return;
+            questionAnswered = true;
+
+            const q = activeQuestions[currentIdx];
+            const isCorrect = selectedIndex === q.correctIndex;
+            const buttons = document.querySelectorAll('.mcq-option');
+
+            buttons.forEach((btn, idx) => {
+                btn.disabled = true;
+                btn.classList.remove('hover:bg-slate-800', 'hover:border-cyan-400/70');
+                const statusEl = btn.querySelector('.option-status');
+
+                if (idx === q.correctIndex) {
+                    btn.classList.remove('bg-slate-800/80', 'border-slate-700');
+                    btn.classList.add('bg-emerald-500/20', 'border-emerald-400', 'text-emerald-200');
+                    statusEl.textContent = '✓ CORRECT';
+                    statusEl.classList.add('text-emerald-400');
+                } else if (idx === selectedIndex && !isCorrect) {
+                    btn.classList.remove('bg-slate-800/80', 'border-slate-700');
+                    btn.classList.add('bg-rose-500/20', 'border-rose-400', 'text-rose-200');
+                    statusEl.textContent = '✕ YOUR PICK';
+                    statusEl.classList.add('text-rose-400');
+                } else {
+                    btn.classList.add('opacity-50');
+                }
+            });
+
+            finalizeQuestionResult(isCorrect, q);
+        }
+
+        function handleTFAnswer(selectedBool) {
+            if (questionAnswered) return;
+            questionAnswered = true;
+
+            const q = activeQuestions[currentIdx];
+            const isCorrect = selectedBool === q.correctBool;
+
+            const trueBtn = document.getElementById('tfTrueBtn');
+            const falseBtn = document.getElementById('tfFalseBtn');
+            trueBtn.disabled = true;
+            falseBtn.disabled = true;
+
+            const correctBtn = q.correctBool ? trueBtn : falseBtn;
+            const wrongBtn = q.correctBool ? falseBtn : trueBtn;
+
+            correctBtn.classList.remove('bg-slate-800/80', 'border-slate-700');
+            correctBtn.classList.add('bg-emerald-500/20', 'border-emerald-400');
+
+            if (!isCorrect) {
+                wrongBtn.classList.remove('bg-slate-800/80', 'border-slate-700');
+                wrongBtn.classList.add('bg-rose-500/20', 'border-rose-400');
+            } else {
+                wrongBtn.classList.add('opacity-45');
+            }
+
+            finalizeQuestionResult(isCorrect, q);
+        }
+
+        function sanitizeNumberInput(val) {
+            // Strip spaces, subscript 2 or 10 if typed, and leading zeros (unless answer is '0')
+            let clean = val.trim().replace(/\s+/g, '').replace(/₂|₁₀/g, '');
+            clean = clean.replace(/^0+(?=\d)/, '');
+            return clean;
+        }
+
+        function handleNumberAnswer() {
+            if (questionAnswered) return;
+            const q = activeQuestions[currentIdx];
+            const input1 = document.getElementById('numInput1');
+            const val1 = sanitizeNumberInput(input1.value);
+
+            if (!val1) {
+                input1.focus();
+                return;
+            }
+
+            let isCorrect = false;
+            if (q.type === 'number_single') {
+                isCorrect = (val1 === q.answer1);
+                input1.disabled = true;
+                input1.classList.add(isCorrect ? 'border-emerald-400' : 'border-rose-400');
+            } else {
+                const input2 = document.getElementById('numInput2');
+                const val2 = sanitizeNumberInput(input2.value);
+                if (!val2) {
+                    input2.focus();
+                    return;
+                }
+                const ok1 = (val1 === q.answer1);
+                const ok2 = (val2 === q.answer2);
+                isCorrect = ok1 && ok2;
+
+                input1.disabled = true;
+                input2.disabled = true;
+                input1.classList.add(ok1 ? 'border-emerald-400' : 'border-rose-400');
+                input2.classList.add(ok2 ? 'border-emerald-400' : 'border-rose-400');
+            }
+
+            questionAnswered = true;
+            const submitBtn = document.getElementById('submitNumBtn');
+            if (submitBtn) submitBtn.classList.add('hidden');
+
+            finalizeQuestionResult(isCorrect, q);
+        }
+
+        function finalizeQuestionResult(isCorrect, q) {
+            if (isCorrect) {
+                score++;
+                streak++;
+                if (streak > bestStreak) bestStreak = streak;
+                topicStats[q.topic].correct++;
+                playCorrectSound(streak);
+
+                // Milestone confetti on 5-streak, 10-streak, or Boss Question defeat!
+                if (streak === 5 || streak === 10 || q.isBoss) {
+                    triggerMiniConfetti();
+                }
+            } else {
+                streak = 0;
+                missedQuestionIds.add(q.id);
+                playWrongSound();
+            }
+
+            updateHUD();
+            showFeedbackBanner(isCorrect, q);
+        }
+
+        function showFeedbackBanner(isCorrect, q) {
+            const banner = document.getElementById('feedbackBanner');
+            const icon = document.getElementById('feedbackIcon');
+            const title = document.getElementById('feedbackTitle');
+            const explanation = document.getElementById('feedbackExplanation');
+
+            banner.classList.remove('hidden', 'bg-emerald-500/15', 'border-emerald-500/40', 'bg-rose-500/15', 'border-rose-500/40');
+            icon.classList.remove('bg-emerald-500', 'text-slate-950', 'bg-rose-500', 'text-white');
+            title.classList.remove('text-emerald-300', 'text-rose-300');
+
+            if (isCorrect) {
+                banner.classList.add('bg-emerald-500/15', 'border-emerald-500/40');
+                icon.classList.add('bg-emerald-500', 'text-slate-950');
+                icon.textContent = '✓';
+                title.classList.add('text-emerald-300');
+                title.textContent = streak >= 3 ? `Spot On! 🔥 ${streak}-Question Streak!` : 'Correct! Well done.';
+            } else {
+                banner.classList.add('bg-rose-500/15', 'border-rose-500/40');
+                icon.classList.add('bg-rose-500', 'text-white');
+                icon.textContent = '!';
+                title.classList.add('text-rose-300');
+                title.textContent = q.isTrap ? 'Caught by the Trap! Review the rule below:' : 'Not quite — check the breakdown below:';
+            }
+
+            explanation.textContent = q.explanation;
+
+            const nextBtn = document.getElementById('nextQuestionBtn');
+            const nextLabel = document.getElementById('nextBtnLabel');
+            nextLabel.textContent = (currentIdx + 1 >= activeQuestions.length) ? 'View Diagnostic Results' : 'Next Question';
+            nextBtn.classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            if (currentIdx + 1 < activeQuestions.length) {
+                currentIdx++;
+                renderQuestion();
+            } else {
+                showResultsScreen();
+            }
+        }
+
+        // ==================== RESULTS & STUDY TRIAGE SCREEN ====================
+        function showResultsScreen() {
+            document.getElementById('quizScreen').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.remove('hidden');
+            document.getElementById('progressBar').style.width = '100%';
+
+            const nameVal = document.getElementById('studentNameInput').value.trim();
+            document.getElementById('reportStudentName').textContent = nameVal ? nameVal.toUpperCase() : 'TECHNICIAN';
+
+            const total = activeQuestions.length;
+            const accuracy = Math.round((score / total) * 100);
+
+            document.getElementById('finalScoreText').textContent = `${score}/${total}`;
+            document.getElementById('finalAccuracyText').textContent = `${accuracy}%`;
+            document.getElementById('finalStreakText').textContent = `🔥 ${bestStreak}`;
+
+            // Determine Rank based on percentage (matching 16-18, 12-15, <12 thresholds)
+            const rankIcon = document.getElementById('rankBadgeIcon');
+            const rankTitle = document.getElementById('rankTitle');
+            const rankSubtitle = document.getElementById('rankSubtitle');
+
+            if (accuracy >= 88) {
+                rankIcon.textContent = '🏆';
+                rankTitle.textContent = 'Master Technician';
+                rankTitle.className = 'text-2xl sm:text-4xl font-extrabold text-emerald-400 mb-2';
+                rankSubtitle.textContent = 'Outstanding mastery! You nailed the core hardware, firmware, and binary math concepts—ready to ace your quiz.';
+                playVictorySound();
+                triggerFullConfetti();
+            } else if (accuracy >= 65) {
+                rankIcon.textContent = '🛠️';
+                rankTitle.textContent = 'Solid Junior Tech';
+                rankTitle.className = 'text-2xl sm:text-4xl font-extrabold text-cyan-400 mb-2';
+                rankSubtitle.textContent = 'Strong foundation! Review the yellow/red topics in your Study Triage below to eliminate trap mistakes.';
+                playVictorySound();
+            } else {
+                rankIcon.textContent = '⚡';
+                rankTitle.textContent = 'Boot Camp Mode';
+                rankTitle.className = 'text-2xl sm:text-4xl font-extrabold text-amber-400 mb-2';
+                rankSubtitle.textContent = 'Good warm-up run! Open the Cheat Sheet, review the flagged topics below, and retry your missed questions.';
+            }
+
+            // Build Topic-by-Topic Mastery Breakdown
+            const grid = document.getElementById('topicBreakdownGrid');
+            grid.innerHTML = '';
+
+            Object.entries(topicStats).forEach(([topic, data]) => {
+                const pct = Math.round((data.correct / data.total) * 100);
+                let badgeClass = 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30';
+                let statusLabel = 'ACED';
+                if (pct < 100 && pct >= 50) {
+                    badgeClass = 'bg-amber-500/15 text-amber-300 border-amber-500/30';
+                    statusLabel = 'REVIEW';
+                } else if (pct < 50) {
+                    badgeClass = 'bg-rose-500/15 text-rose-300 border-rose-500/30';
+                    statusLabel = 'PRIORITY';
+                }
+
+                const card = document.createElement('div');
+                card.className = 'p-3.5 rounded-2xl bg-slate-800/70 border border-slate-700/80 flex items-center justify-between gap-2';
+                card.innerHTML = `
+                    <div class="text-xs sm:text-sm font-semibold text-slate-200 truncate">${topic}</div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <span class="font-mono text-xs text-slate-400">${data.correct}/${data.total}</span>
+                        <span class="px-2 py-0.5 rounded-md border font-mono text-[10px] font-extrabold ${badgeClass}">${statusLabel}</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            // Toggle "Retry Missed Questions" button visibility
+            const retryBtn = document.getElementById('retryMissedBtn');
+            const missedCount = missedQuestionIds.size;
+            if (missedCount > 0) {
+                retryBtn.classList.remove('hidden');
+                document.getElementById('missedCountLabel').textContent = missedCount;
+            } else {
+                retryBtn.classList.add('hidden');
+            }
+        }
+
+        // ==================== CONFETTI & KEYBOARD SHORTCUTS ====================
+        function triggerMiniConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 45,
+                    spread: 60,
+                    origin: { y: 0.7 }
+                });
+            }
+        }
+
+        function triggerFullConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 110,
+                    spread: 85,
+                    origin: { y: 0.6 }
+                });
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            // Ignore shortcuts when typing in inputs or modal is open
+            if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+            if (!document.getElementById('cheatSheetModal').classList.contains('hidden')) {
+                if (e.key === 'Escape') toggleCheatSheet();
+                return;
+            }
+            if (document.getElementById('quizScreen').classList.contains('hidden')) return;
+
+            const q = activeQuestions[currentIdx];
+            if (!questionAnswered) {
+                if (q.type === 'mcq') {
+                    const keyMap = { '1': 0, 'a': 0, '2': 1, 'b': 1, '3': 2, 'c': 2, '4': 3, 'd': 3 };
+                    const idx = keyMap[e.key.toLowerCase()];
+                    if (idx !== undefined) handleMCQAnswer(idx);
+                } else if (q.type === 'tf') {
+                    if (e.key.toLowerCase() === 't' || e.key === '1') handleTFAnswer(true);
+                    if (e.key.toLowerCase() === 'f' || e.key === '2') handleTFAnswer(false);
+                }
+            } else if (e.key === 'Enter') {
+                nextQuestion();
+            }
+        });
+    </script>
+</body>
+</html>
